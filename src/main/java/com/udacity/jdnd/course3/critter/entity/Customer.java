@@ -20,7 +20,7 @@ public class Customer {
 
     private String notes;
 
-    @OneToMany(targetEntity = Pet.class)
+    @OneToMany(targetEntity = Pet.class, cascade = CascadeType.ALL)
     private List<Pet> pets;
 
     public Customer(Long id, String name, String phoneNumber, String notes) {
