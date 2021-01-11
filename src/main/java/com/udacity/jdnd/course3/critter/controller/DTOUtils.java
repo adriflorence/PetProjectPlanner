@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.controller;
 
 import com.udacity.jdnd.course3.critter.dto.CustomerDTO;
 import com.udacity.jdnd.course3.critter.dto.EmployeeDTO;
+import com.udacity.jdnd.course3.critter.dto.PetDTO;
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.Pet;
@@ -24,5 +25,9 @@ public class DTOUtils {
 
     public static EmployeeDTO makeDTOFromEmployee(Employee employee) {
         return new EmployeeDTO(employee.getId(),employee.getName(),employee.getSkills(),employee.getDaysAvailable());
+    }
+
+    public static PetDTO makeDTOFromPet(Pet pet) {
+        return new PetDTO(pet.getId(), pet.getType(), pet.getName(), pet.getCustomer().getId(), pet.getBirthDate(), pet.getNotes());
     }
 }
