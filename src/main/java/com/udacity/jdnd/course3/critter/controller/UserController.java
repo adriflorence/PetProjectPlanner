@@ -47,7 +47,11 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        throw new UnsupportedOperationException();
+        Optional<Customer> optCustomer = userService.getOwnerByPet(petId);
+        if (optCustomer.isPresent()) {
+            return DTOUtils.makeDTOFromCustomer(optCustomer.get());
+        }
+        return null;
     }
 
     @PostMapping("/employee")
@@ -61,14 +65,19 @@ public class UserController {
         Optional<Employee> employeeById = userService.getEmployeeById(employeeId);
         if(employeeById.isPresent()) {
             return DTOUtils.makeDTOFromEmployee(employeeById.get());
-        } else {
-            return null;
         }
+        return null;
     }
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        Optional<Employee> optionalEmployee = userService.getEmployeeById(employeeId);
+        if(optionalEmployee.isPresent()) {
+            Employee employee = optionalEmployee.get();
+            employee.setDaysAvailable(daysAvailable);
+            userService.saveEmployee(DTOUtils.makeDTOFromEmployee(employee));
+        }
+
     }
 
     @GetMapping("/employee/availability")
