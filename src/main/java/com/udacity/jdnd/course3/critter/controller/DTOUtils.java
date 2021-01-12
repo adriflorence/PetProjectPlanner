@@ -31,8 +31,8 @@ public class DTOUtils {
     }
 
     public static ScheduleDTO convertScheduleToDTO(Schedule schedule) {
-//        return new ScheduleDTO(schedule.getId(), getPetIds(schedule.getPets()));
-        return null;
+        List<Long> employeeIds = getEmployeeIds(schedule.getEmployee());
+        return new ScheduleDTO(schedule.getId(), getPetIds(schedule.getPets()), employeeIds, schedule.getDate(), schedule.getActivities());
     }
 
     private static List<Long> getPetIds(List<Pet> pets) {
@@ -41,5 +41,13 @@ public class DTOUtils {
             petIds = pets.stream().map(Pet::getId).collect(Collectors.toList());
         }
         return petIds;
+    }
+
+    private static List<Long> getEmployeeIds(List<Employee> employees) {
+        List<Long> employeeIds = new ArrayList<>();
+        if(employees != null) {
+            employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+        }
+        return employeeIds;
     }
 }
