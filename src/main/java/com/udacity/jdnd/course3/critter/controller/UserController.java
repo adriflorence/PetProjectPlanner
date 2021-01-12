@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         Customer customer = userService.saveCustomer(customerDTO);
-        return DTOUtils.makeDTOFromCustomer(customer);
+        return DTOUtils.convertCustomerToDTO(customer);
     }
 
     @GetMapping("/customer")
@@ -39,7 +39,7 @@ public class UserController {
         List<Customer> customers = userService.getAllCustomers();
         List<CustomerDTO> customerDTOS = new ArrayList<>();
         for(Customer customer : customers) {
-            customerDTOS.add(DTOUtils.makeDTOFromCustomer(customer));
+            customerDTOS.add(DTOUtils.convertCustomerToDTO(customer));
         }
 
         return customerDTOS;
@@ -49,7 +49,7 @@ public class UserController {
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
         Optional<Customer> optCustomer = userService.getOwnerByPet(petId);
         if (optCustomer.isPresent()) {
-            return DTOUtils.makeDTOFromCustomer(optCustomer.get());
+            return DTOUtils.convertCustomerToDTO(optCustomer.get());
         }
         return null;
     }
@@ -57,14 +57,14 @@ public class UserController {
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = userService.saveEmployee(employeeDTO);
-        return DTOUtils.makeDTOFromEmployee(employee);
+        return DTOUtils.convertEmployeeToDTO(employee);
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         Optional<Employee> employeeById = userService.getEmployeeById(employeeId);
         if(employeeById.isPresent()) {
-            return DTOUtils.makeDTOFromEmployee(employeeById.get());
+            return DTOUtils.convertEmployeeToDTO(employeeById.get());
         }
         return null;
     }
@@ -75,14 +75,19 @@ public class UserController {
         if(optionalEmployee.isPresent()) {
             Employee employee = optionalEmployee.get();
             employee.setDaysAvailable(daysAvailable);
-            userService.saveEmployee(DTOUtils.makeDTOFromEmployee(employee));
+            userService.saveEmployee(DTOUtils.convertEmployeeToDTO(employee));
         }
 
     }
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        List<Employee> employees = userService.getEmployeeBySkillsAndAvailability(employeeDTO);
+        List<EmployeeDTO> employeeDTOS = new ArrayList<>();
+        for(Employee employee : employees) {
+            employeeDTOS.add(DTOUtils.convertEmployeeToDTO(employee));
+        }
+        return employeeDTOS;
     }
 
 }

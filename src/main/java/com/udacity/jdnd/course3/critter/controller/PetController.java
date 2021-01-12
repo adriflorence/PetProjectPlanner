@@ -23,14 +23,14 @@ public class PetController {
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         Pet pet = petService.savePet(petDTO);
-        return DTOUtils.makeDTOFromPet(pet);
+        return DTOUtils.convertPetToDTO(pet);
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
         Optional<Pet> pet = petService.getPetById(petId);
         if(pet.isPresent()) {
-            return DTOUtils.makeDTOFromPet(pet.get());
+            return DTOUtils.convertPetToDTO(pet.get());
         } else {
             return null;
         }
@@ -46,7 +46,7 @@ public class PetController {
         List<Pet> pets = petService.getPetsByCustomerId(ownerId);
         List<PetDTO> petDTOS = new ArrayList<>();
         for(Pet pet : pets) {
-            petDTOS.add(DTOUtils.makeDTOFromPet(pet));
+            petDTOS.add(DTOUtils.convertPetToDTO(pet));
         }
 
         return petDTOS;
