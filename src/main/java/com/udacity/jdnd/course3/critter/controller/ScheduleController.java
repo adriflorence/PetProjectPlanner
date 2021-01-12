@@ -24,37 +24,10 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PetService petService;
-
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule(scheduleDTO.getDate(), scheduleDTO.getActivities());
-
-        // set employees
-        List<Employee> employees = new ArrayList<>();
-        for(Long id : scheduleDTO.getEmployeeIds()) {
-            Optional<Employee> employee = userService.getEmployeeById(id);
-            if(employee.isPresent()) {
-                employees.add(employee.get());
-            }
-        }
-        schedule.setEmployee(employees);
-
-        // set pets
-        List<Pet> pets = new ArrayList<>();
-        for(Long id : scheduleDTO.getPetIds()){
-            Optional<Pet> pet = petService.getPetById(id);
-            if(pet.isPresent()) {
-                pets.add(pet.get());
-            }
-        }
-        schedule.setPets(pets);
-
-        Schedule updatedSchedule = scheduleService.saveSchedule(schedule);
+        Schedule updatedSchedule = scheduleService.saveSchedule(schedule, scheduleDTO.getEmployeeIds(), scheduleDTO.getPetIds());
         return DTOUtils.convertScheduleToDTO(updatedSchedule);
     }
 
