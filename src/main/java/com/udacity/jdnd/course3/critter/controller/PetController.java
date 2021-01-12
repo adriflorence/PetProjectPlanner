@@ -38,7 +38,12 @@ public class PetController {
 
     @GetMapping
     public List<PetDTO> getPets(){
-        throw new UnsupportedOperationException();
+        List<Pet> pets = petService.getPets();
+        List<PetDTO> petDTOS = new ArrayList<>();
+        for(Pet pet : pets) {
+            petDTOS.add(DTOUtils.convertPetToDTO(pet));
+        }
+        return petDTOS;
     }
 
     @GetMapping("/owner/{ownerId}")
@@ -48,7 +53,6 @@ public class PetController {
         for(Pet pet : pets) {
             petDTOS.add(DTOUtils.convertPetToDTO(pet));
         }
-
         return petDTOS;
     }
 }
