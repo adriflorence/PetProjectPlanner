@@ -17,8 +17,7 @@ public class ScheduleDTO {
     private LocalDate date;
     private Set<EmployeeSkill> activities;
 
-    public ScheduleDTO(long id, List<Long> employeeIds, List<Long> petIds, LocalDate date, Set<EmployeeSkill> activities) {
-        this.id = id;
+    public ScheduleDTO(List<Long> employeeIds, List<Long> petIds, LocalDate date, Set<EmployeeSkill> activities) {
         this.employeeIds = employeeIds;
         this.petIds = petIds;
         this.date = date;
