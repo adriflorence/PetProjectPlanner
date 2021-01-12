@@ -70,14 +70,15 @@ public class UserController {
     }
 
     @PutMapping("/employee/{employeeId}")
-    public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
+    public EmployeeDTO setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
         Optional<Employee> optionalEmployee = userService.getEmployeeById(employeeId);
         if(optionalEmployee.isPresent()) {
             Employee employee = optionalEmployee.get();
             employee.setDaysAvailable(daysAvailable);
-            userService.saveEmployee(DTOUtils.convertEmployeeToDTO(employee));
+            Employee emp = userService.saveEmployee(DTOUtils.convertEmployeeToDTO(employee));
+            return DTOUtils.convertEmployeeToDTO(emp);
         }
-
+        return null;
     }
 
     @GetMapping("/employee/availability")

@@ -32,7 +32,7 @@ public class DTOUtils {
 
     public static ScheduleDTO convertScheduleToDTO(Schedule schedule) {
         List<Long> employeeIds = getEmployeeIds(schedule.getEmployee());
-        return new ScheduleDTO(schedule.getId(), getPetIds(schedule.getPets()), employeeIds, schedule.getDate(), schedule.getActivities());
+        return new ScheduleDTO(employeeIds, getPetIds(schedule.getPets()), schedule.getDate(), schedule.getActivities());
     }
 
     private static List<Long> getPetIds(List<Pet> pets) {
